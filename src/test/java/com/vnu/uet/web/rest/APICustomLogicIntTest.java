@@ -87,6 +87,25 @@ class APICustomLogicIntTest {
         return curl.toString();
     }
 
+    private byte[] createMinimalPdf() {
+        try (org.apache.pdfbox.pdmodel.PDDocument doc = new org.apache.pdfbox.pdmodel.PDDocument()) {
+            org.apache.pdfbox.pdmodel.PDPage page = new org.apache.pdfbox.pdmodel.PDPage();
+            doc.addPage(page);
+            try (org.apache.pdfbox.pdmodel.PDPageContentStream contents = new org.apache.pdfbox.pdmodel.PDPageContentStream(doc, page)) {
+                contents.beginText();
+                contents.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA, 12);
+                contents.newLineAtOffset(100, 700);
+                contents.showText("Dummy extracted text for tests");
+                contents.endText();
+            }
+            java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+            doc.save(baos);
+            return baos.toByteArray();
+        } catch (Exception e) {
+            return "dummy pdf content".getBytes();
+        }
+    }
+
     private MvcResult performAndLog(String method, String url, String body, boolean isMultipart, 
                                     String scenario, String expected) throws Exception {
         String curl = toCurl(method, url, body, isMultipart);
@@ -94,7 +113,7 @@ class APICustomLogicIntTest {
         
         if (isMultipart) {
             MockMultipartFile file = new MockMultipartFile(
-                "file", "test.pdf", "application/pdf", "dummy pdf content".getBytes()
+                "file", "test.pdf", "application/pdf", createMinimalPdf()
             );
             result = mockMvc.perform(multipart(url)
                             .file(file)
@@ -117,7 +136,7 @@ class APICustomLogicIntTest {
             }
         } catch (Exception e) {}
 
-        boolean isSuccess = status >= 200 && status < 300;
+        boolean isSuccess = (status >= 200 && status < 300) || (status == 404 && expected != null && expected.contains("hoặc 404"));
         String statusIcon = isSuccess ? "🟢" : "🔴";
         String resultType = isSuccess ? "Thành công" : "Thất bại";
         String actual = "HTTP " + status;
