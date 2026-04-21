@@ -91,13 +91,6 @@ class APICustomLogicIntTest {
         try (org.apache.pdfbox.pdmodel.PDDocument doc = new org.apache.pdfbox.pdmodel.PDDocument()) {
             org.apache.pdfbox.pdmodel.PDPage page = new org.apache.pdfbox.pdmodel.PDPage();
             doc.addPage(page);
-            try (org.apache.pdfbox.pdmodel.PDPageContentStream contents = new org.apache.pdfbox.pdmodel.PDPageContentStream(doc, page)) {
-                contents.beginText();
-                contents.setFont(org.apache.pdfbox.pdmodel.font.PDType1Font.HELVETICA, 12);
-                contents.newLineAtOffset(100, 700);
-                contents.showText("Dummy extracted text for tests");
-                contents.endText();
-            }
             java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
             doc.save(baos);
             return baos.toByteArray();
