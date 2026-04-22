@@ -69,7 +69,7 @@ public class DocumentMapService {
                 log.error("Task {} not found in db", taskId);
                 return;
             }
-            DocumentExtraction doc = docOpt.get();
+            DocumentExtraction doc = docOpt.orElseThrow();
 
             // 1. Upload to S3
             String s3Key = s3Service.uploadFile(file, formName);

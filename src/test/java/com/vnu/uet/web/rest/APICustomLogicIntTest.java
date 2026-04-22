@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vnu.uet.IntegrationTest;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
@@ -228,7 +227,7 @@ class APICustomLogicIntTest {
     @AfterAll
     static void generateReport() {
         try {
-            Path path = Paths.get("target/api-test-results.md");
+            Path path = Path.of("target/api-test-results.md");
             Files.createDirectories(path.getParent());
             long total = testDetails.size();
             long success = testDetails.stream().filter(d -> d.statusIcon.equals("🟢")).count();

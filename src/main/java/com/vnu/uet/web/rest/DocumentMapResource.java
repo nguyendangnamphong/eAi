@@ -60,7 +60,7 @@ public class DocumentMapResource {
             return ResponseEntity.notFound().build();
         }
         
-        String status = docOpt.get().getStatus();
+        String status = docOpt.orElseThrow().getStatus();
         return ResponseEntity.ok(new DocumentMapResponseDTO(String.valueOf(taskId), status, "Current status: " + status));
     }
 
@@ -72,7 +72,7 @@ public class DocumentMapResource {
         log.debug("REST request to get result for task: {}", taskId);
         
         Optional<DocumentExtraction> docOpt = documentExtractionRepository.findById(taskId);
-        if (docOpt.isEmpty() || !"COMPLETED".equals(docOpt.get().getStatus())) {
+        if (docOpt.isEmpty() || !"COMPLETED".equals(docOpt.orElseThrow().getStatus())) {
             return ResponseEntity.notFound().build();
         }
         
@@ -84,7 +84,7 @@ public class DocumentMapResource {
             return ResponseEntity.notFound().build();
         }
         
-        FilledForm form = formOpt.get();
+        FilledForm form = formOpt.orElseThrow();
         FilledFormResultDTO dto = new FilledFormResultDTO();
         dto.setFormName(form.getFormName());
         dto.setConfidence(form.getConfidence());
@@ -100,10 +100,10 @@ public class DocumentMapResource {
     @GetMapping("/document-maps/{taskId}/raw-text")
     public ResponseEntity<String> getRawText(@PathVariable Long taskId) {
         Optional<DocumentExtraction> docOpt = documentExtractionRepository.findById(taskId);
-        if (docOpt.isEmpty() || docOpt.get().getRawText() == null) {
+        if (docOpt.isEmpty() || docOpt.orElseThrow().getRawText() == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(docOpt.get().getRawText());
+        return ResponseEntity.ok(docOpt.orElseThrow().getRawText());
     }
 
     /**
