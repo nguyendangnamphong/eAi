@@ -59,8 +59,8 @@ jobs:
       run: |
         echo "Đang chờ dịch vụ eAi (và MySQL) khởi động..."
         for i in {1..15}; do
-          HTTP_STATUS=$(curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8084/management/health || echo "000")
-          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 401 ]; then
+          HTTP_STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://localhost:8084/management/health || true)
+          if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "401" ]; then
             echo "✅ Dịch vụ đã phản hồi ở cổng 8084 (HTTP $HTTP_STATUS)"
             exit 0
           fi
