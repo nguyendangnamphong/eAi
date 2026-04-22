@@ -52,7 +52,7 @@ jobs:
     - name: 5. Khởi động ứng dụng trong Docker (Chạy thử Container)
       if: success()
       run: |
-        docker-compose up -d
+        docker compose up -d
         
     - name: 6. Kiểm tra Smoke Test (Chạy được không?)
       if: success()
