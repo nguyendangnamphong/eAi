@@ -67,5 +67,6 @@ jobs:
           echo "Đang thử lại ($i/40)..."
           sleep 5
         done
-        echo "❌ Dịch vụ không khởi động thành công trong Docker."
+        echo "❌ Dịch vụ không khởi động thành công trong Docker. Hiển thị logs:"
+        docker compose logs
         exit 1

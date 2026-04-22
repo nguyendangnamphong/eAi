@@ -9,9 +9,9 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://eai-mysql:3306/docform?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
-      # Placeholder for API Keys
       - AWS_S3_ACCESS_KEY=${AWS_ACCESS_KEY:-your_access_key}
       - AWS_S3_SECRET_KEY=${AWS_SECRET_KEY:-your_secret_key}
+      - SPRING_CLOUD_CONSUL_ENABLED=false
       - GEMINI_API_KEY=${GEMINI_API_KEY:-your_gemini_key}
     ports:
       - "8084:8084"
